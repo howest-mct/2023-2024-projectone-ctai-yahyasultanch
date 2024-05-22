@@ -23,7 +23,7 @@ def main():
                 print("In main loop: {}".format(incoming))
                 
                 # Display the received data on the LCD along with the device name
-                lcd_message = f"{device_name} \n {incoming}"
+                lcd_message = f"{device_name} = {incoming}"
                 lcd.display_message(lcd_message)
         except queue.Empty:
             # No data received, continue the loop

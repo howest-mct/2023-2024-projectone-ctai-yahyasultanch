@@ -68,14 +68,6 @@ class LCD:
     def cursor_off(self):
         self.send_instruction(0x0C) 
 
-    def display_ip_addresses(self):
-        self.clear()
-        wlan_ip = self.get_ipv4_addresses('wlan0')
-        eth_ip = self.get_ipv4_addresses('eth0')
-
-        self.send_string(wlan_ip, LCD.LCD_LINE_1)
-        self.send_string(eth_ip, LCD.LCD_LINE_2)
-
     def display_led_bar_graph_x(self, analog_value):
         num_leds_lit = int((analog_value / 255.0) * 16)  # because LCD_width is 16
         bar_graph = "|" * num_leds_lit + " " * (16 - num_leds_lit)
@@ -90,16 +82,6 @@ class LCD:
         self.clear()
         self.send_string("Send a message", LCD.LCD_LINE_1)
         self.send_string("via BLE UART", LCD.LCD_LINE_2)
-
-    # def display_message(self, message):
-    #     self.clear()
-    #     if len(message) <= self.LCD_WIDTH:
-    #         self.send_string(message)
-    #     else:
-    #         message += " " * (self.LCD_WIDTH - 1) 
-    #         for i in range(len(message) - self.LCD_WIDTH + 1):
-    #             self.send_string(message[i:i + self.LCD_WIDTH])
-    #             time.sleep(0.5)
 
     def display_message(self, message):
         self.clear()
