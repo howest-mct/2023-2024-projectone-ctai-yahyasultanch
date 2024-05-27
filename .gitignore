@@ -19,6 +19,12 @@
 # lgpio hidden files
 *.lgd*
 
+# Ignore dataset folder
+labelled_dataset(2)/
+
+# Ignore dataset folder
+predict/
+
 # Python project
 config.py
 *.css
