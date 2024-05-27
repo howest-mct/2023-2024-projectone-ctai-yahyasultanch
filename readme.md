@@ -1,9 +1,9 @@
-# Project Title
+# Smart Plastic Bottles Waste Management 
 
-**FIRST & LAST NAME:** A B
+**FIRST & LAST NAME:** Yahya Chaudhry
 
-**Sparring Partner:** C D
+**Sparring Partner:** Tobias Pottier
 
-**Project Summary in max 10 words:** E
+**Project Summary in max 10 words:** A Smart plastic bottles management reverse-vending machine
 
-**Project Title:** F
+**Project Title:** Smart Plastic Bottles Waste Management
