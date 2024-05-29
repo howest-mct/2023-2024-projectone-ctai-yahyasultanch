@@ -1,4 +1,4 @@
-# Smart Plastic Bottles Waste Management 
+# Project Information
 
 **FIRST & LAST NAME:** Yahya Chaudhry
 
