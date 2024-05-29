@@ -2,7 +2,7 @@ from ultralytics import YOLO
 import os
 
 # Load the trained YOLOv8 model
-model = YOLO('runs/detect/yolov8_bottle_cap/weights/best.pt')  # Path to your trained model
+model = YOLO('runs/detect/yolov8_new_bottle/weights/best.pt')  # Path to your trained model
 
 # Path to the test images
 test_images_path = 'C:\\Users\\yahya\\Documents\\project_one\\2023-2024-projectone-ctai-yahyasultanch\\labelled_dataset(2)\\test\\images'

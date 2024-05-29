@@ -3,7 +3,7 @@ from ultralytics import YOLO
 import torch
 
 # Load the YOLOv8 model
-model = YOLO('runs/detect/yolov8_bottle_cap/weights/best.pt')
+model = YOLO('runs/detect/yolov8_new_bottle/weights/best.pt')
 
 # Initialize the webcamq
 cap = cv2.VideoCapture(0)

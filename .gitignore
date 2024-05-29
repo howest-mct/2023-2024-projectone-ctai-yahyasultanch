@@ -22,7 +22,7 @@
 # Ignore dataset folder
 labelled_dataset(2)/
 
-# Ignore dataset folder
+# ignore predicted test results
 predict/
 
 # Python project

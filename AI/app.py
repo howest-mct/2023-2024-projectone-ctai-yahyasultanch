@@ -12,6 +12,7 @@ import supervision as sv  # Importing a module named supervision as sv.
 from ultralytics import YOLO
 import gradio as gr  # Importing Gradio library for creating web interfaces.
 
+# ----------------- pre-given code -----------------------
 # print("start")
 
 # model = YOLO("AI/runs/detect/train5/weights/best.pt")
@@ -43,11 +44,6 @@ import gradio as gr  # Importing Gradio library for creating web interfaces.
 #     # Creating a VideoWriter object for writing the processed frames to an output video file.
 #     out = cv2.VideoWriter('output_video.mp4',
 #                           cv2.VideoWriter_fourcc(*'MJPG'), fps, (w, h))
-
-
-
-
-
 
 #     # Looping through each frame of the video until it is opened.
 #     while (cap.isOpened()):
@@ -100,33 +96,161 @@ import gradio as gr  # Importing Gradio library for creating web interfaces.
     
 # ------------------------------------------------------------------------------------------------
 
-# # Defining inputs and outputs for the Gradio interface.
-# inputs_video = [
-#     gr.components.Video(label="Input video"),
-#     gr.Slider(minimum=0, maximum=1, value=0.25, label="Confidence threshold")
-# ]
-# outputs_video = [
-#     gr.components.Image(type="numpy", label="Analysed video"),
-#     gr.Textbox(label="Amount of drones"),
-# ]
-# # Creating a Gradio interface with specified inputs, outputs, and other settings.
-# interface_video = gr.Interface(
-#     fn=show_preds_video,
-#     inputs=inputs_video,
-#     outputs=outputs_video,
-#     title="Bee detector",
-#     cache_examples=False,
-# )
 
 
-# # Launching the Gradio interface.
-# if __name__ == '__main__':
-#     print("launching BLE thread")
-#     init_ble_thread()
-#     time.sleep(1) # little breathing room for BLE to start
-#     print("launching GradIO interface")
-#     interface_video.launch()
+
+
+
+
+
+
+
+
+
+
+
+# ---------------- live video stream ---------------
+import sys
+import asyncio
+from queue import Queue
+import threading
+import time
+import cv2
+import torch
+from ultralytics import YOLO
+from BLE_client import run  # Import the BLE client run function
+from bleak import BleakScanner
+
+print("start")
+
+# Load the YOLO model
+model = YOLO("C:\\Users\\yahya\\Documents\\project_one\\2023-2024-projectone-ctai-yahyasultanch\\runs\\detect\\yolov8_new_bottle\\weights\\best.pt")
+
+# Create queues for communication between threads
+tx_q = Queue()
+rx_q = Queue()
+
+targetDeviceName = None
+targetDeviceMac = "D8:3A:DD:DE:0B:D9"  # Update this with your Raspberry Pi's MAC address
+
+def init_ble_thread():
+    ble_client_thread = threading.Thread(target=run, args=(rx_q, tx_q, targetDeviceName, targetDeviceMac), daemon=True)
+    ble_client_thread.start()
+
+async def find_device(mac_address):
+    device = None
+    while device is None:
+        print("Scanning for device...")
+        devices = await BleakScanner.discover()
+        for d in devices:
+            if d.address == mac_address:
+                device = d
+                break
+        if device is None:
+            print("Device not found, retrying...")
+            time.sleep(2)
+    print(f"Found device: {device.address}")
+    return device
+
+def process_frame(frame):
+    results = model(frame)
+    bottle_detected = False
+    cap_detected = False
     
+    for result in results:
+        boxes = result.boxes
+        if boxes is not None:
+            for box in boxes:
+                cls = int(box.cls.item())
+                conf = box.conf.item()
+                xyxy = box.xyxy if isinstance(box.xyxy, torch.Tensor) else torch.tensor(box.xyxy)
+                xyxy = xyxy.view(-1).numpy().astype(int)
+
+                # Check if confidence is below 0.4, skip drawing the bounding box
+                if conf < 0.6:
+                    continue
+
+                # Determine color based on detection confidence
+                if conf >= 0.6:
+                    color = (0, 255, 0)  # Green for accepted
+                else:
+                    color = (0, 0, 255)  # Red for rejected
+
+                # Check if bottle and cap are detected with sufficient confidence
+                if result.names[cls] == 'bottle' and conf >= 0.6:
+                    bottle_detected = True
+                if result.names[cls] == 'cap' and conf >= 0.6:
+                    cap_detected = True
+
+                # Draw the bounding box and label
+                cv2.rectangle(frame, (xyxy[0], xyxy[1]), (xyxy[2], xyxy[3]), color, 2)
+                label = f"{result.names[cls]}: {conf:.2f}"
+                cv2.putText(frame, label, (xyxy[0], xyxy[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+
+    # Send the result via BLE
+    if bottle_detected and cap_detected:
+        tx_q.put("accepted")
+        print("Accepted: Bottle and Cap detected")
+    else:
+        tx_q.put("rejected")
+        print("Rejected: Bottle or Cap not detected")
+
+def main():
+    # Check for the BLE device before starting camera processing
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    device = loop.run_until_complete(find_device(targetDeviceMac))
+
+    # Initialize the BLE thread once the device is found
+    print("Launching BLE thread")
+    init_ble_thread()
+    time.sleep(1)  # Give some time for BLE to start
+
+    # Initialize the webcam
+    cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        print("Error: Could not open webcam.")
+        exit()
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            print("Error: Could not read frame.")
+            break
+
+        process_frame(frame)
+
+        # Display the frame with OpenCV
+        cv2.imshow("Camera Feed", frame)
+
+        # Exit loop when 'q' key is pressed
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    main()
+
+
+
+# ------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# --------------- 1fps picture capture ------------
 
 # import sys
 # import asyncio
@@ -141,7 +265,7 @@ import gradio as gr  # Importing Gradio library for creating web interfaces.
 # print("start")
 
 # # Load the YOLO model
-# model = YOLO("C:\\Users\\yahya\\Documents\\project_one\\2023-2024-projectone-ctai-yahyasultanch\\runs\\detect\\yolov8_bottle_cap\\weights\\best.pt")
+# model = YOLO("C:\\Users\\yahya\\Documents\\project_one\\2023-2024-projectone-ctai-yahyasultanch\\runs\\detect\\yolov8_new_bottle\\weights\\best.pt")
 
 # # Create queues for communication between threads
 # tx_q = Queue()
@@ -157,11 +281,11 @@ import gradio as gr  # Importing Gradio library for creating web interfaces.
 
 # def process_frame(frame):
 #     results = model(frame)
+#     bottle_detected = False
+#     cap_detected = False
 #     for result in results:
 #         boxes = result.boxes
 #         if boxes is not None:
-#             bottle_detected = False
-#             cap_detected = False
 #             for box in boxes:
 #                 cls = int(box.cls.item())
 #                 conf = box.conf.item()
@@ -170,9 +294,9 @@ import gradio as gr  # Importing Gradio library for creating web interfaces.
 
 #                 # Draw the bounding box
 #                 color = (0, 255, 0)  # Green for accepted
-#                 if result.names[cls] == 'bottle' and conf > 0.3:
+#                 if result.names[cls] == 'bottle' and conf > 0.5:
 #                     bottle_detected = True
-#                 if result.names[cls] == 'cap' and conf > 0.3:
+#                 if result.names[cls] == 'cap' and conf > 0.5:
 #                     cap_detected = True
 
 #                 if not (bottle_detected and cap_detected):
@@ -182,12 +306,12 @@ import gradio as gr  # Importing Gradio library for creating web interfaces.
 #                 label = f"{result.names[cls]}: {conf:.2f}"
 #                 cv2.putText(frame, label, (xyxy[0], xyxy[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
-#             if bottle_detected and cap_detected:
-#                 tx_q.put("accepted")
-#                 print("Accepted: Bottle and Cap detected")
-#             else:
-#                 tx_q.put("rejected")
-#                 print("Rejected: Bottle or Cap not detected")
+#     if bottle_detected and cap_detected:
+#         tx_q.put("accepted")
+#         print("Accepted: Bottle and Cap detected")
+#     else:
+#         tx_q.put("rejected")
+#         print("Rejected: Bottle or Cap not detected")
 
 # def main():
 #     # Initialize the BLE thread
@@ -202,6 +326,8 @@ import gradio as gr  # Importing Gradio library for creating web interfaces.
 #         exit()
 
 #     while True:
+#         # Capture a frame every 5 seconds
+#         time.sleep(2)
 #         ret, frame = cap.read()
 #         if not ret:
 #             print("Error: Could not read frame.")
@@ -210,9 +336,9 @@ import gradio as gr  # Importing Gradio library for creating web interfaces.
 #         process_frame(frame)
 
 #         # Display the frame with OpenCV
-#         cv2.imshow("Camera Feed", frame)
-
-#         # Exit loop when 'q' key is pressed
+#         cv2.imshow("Captured Image", frame)
+        
+#         # Check if 'q' key is pressed to exit the loop
 #         if cv2.waitKey(1) & 0xFF == ord('q'):
 #             break
 
@@ -221,101 +347,3 @@ import gradio as gr  # Importing Gradio library for creating web interfaces.
 
 # if __name__ == '__main__':
 #     main()
-
-# ------------------------------------------------------------------------------------------
-
-import sys
-import asyncio
-from queue import Queue
-import threading
-import time
-import cv2
-import torch
-from ultralytics import YOLO
-from BLE_client import run  # Import the BLE client run function
-
-print("start")
-
-# Load the YOLO model
-model = YOLO("C:\\Users\\yahya\\Documents\\project_one\\2023-2024-projectone-ctai-yahyasultanch\\runs\\detect\\yolov8_bottle_cap\\weights\\best.pt")
-
-# Create queues for communication between threads
-tx_q = Queue()
-rx_q = Queue()
-
-targetDeviceName = None
-targetDeviceMac = "D8:3A:DD:DE:0B:D9"  # Update this with your Raspberry Pi's MAC address
-
-# Initialize and start the BLE client thread
-def init_ble_thread():
-    ble_client_thread = threading.Thread(target=run, args=(rx_q, tx_q, targetDeviceName, targetDeviceMac), daemon=True)
-    ble_client_thread.start()
-
-def process_frame(frame):
-    results = model(frame)
-    bottle_detected = False
-    cap_detected = False
-    for result in results:
-        boxes = result.boxes
-        if boxes is not None:
-            for box in boxes:
-                cls = int(box.cls.item())
-                conf = box.conf.item()
-                xyxy = box.xyxy if isinstance(box.xyxy, torch.Tensor) else torch.tensor(box.xyxy)
-                xyxy = xyxy.view(-1).numpy().astype(int)
-
-                # Draw the bounding box
-                color = (0, 255, 0)  # Green for accepted
-                if result.names[cls] == 'bottle' and conf > 0.3:
-                    bottle_detected = True
-                if result.names[cls] == 'cap' and conf > 0.3:
-                    cap_detected = True
-
-                if not (bottle_detected and cap_detected):
-                    color = (0, 0, 255)  # Red for rejected
-
-                cv2.rectangle(frame, (xyxy[0], xyxy[1]), (xyxy[2], xyxy[3]), color, 2)
-                label = f"{result.names[cls]}: {conf:.2f}"
-                cv2.putText(frame, label, (xyxy[0], xyxy[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
-
-    if bottle_detected and cap_detected:
-        tx_q.put("accepted")
-        print("Accepted: Bottle and Cap detected")
-    else:
-        tx_q.put("rejected")
-        print("Rejected: Bottle or Cap not detected")
-
-def main():
-    # Initialize the BLE thread
-    print("Launching BLE thread")
-    init_ble_thread()
-    time.sleep(1)  # Give some time for BLE to start
-
-    # Initialize the webcam
-    cap = cv2.VideoCapture(0)
-    if not cap.isOpened():
-        print("Error: Could not open webcam.")
-        exit()
-
-    while True:
-        # Capture a frame every 5 seconds
-        time.sleep(2)
-        ret, frame = cap.read()
-        if not ret:
-            print("Error: Could not read frame.")
-            break
-
-        process_frame(frame)
-
-        # Display the frame with OpenCV
-        cv2.imshow("Captured Image", frame)
-        
-        # Check if 'q' key is pressed to exit the loop
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    cap.release()
-    cv2.destroyAllWindows()
-
-if __name__ == '__main__':
-    main()
