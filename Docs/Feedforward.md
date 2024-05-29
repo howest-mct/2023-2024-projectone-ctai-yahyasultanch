@@ -1,12 +1,12 @@
 # Project Information
 
-**FIRST NAME LAST NAME:** A B
+**FIRST NAME LAST NAME:** Yahya Chaudhry
 
-**Sparring Partner:** C D
+**Sparring Partner:** Tobias Pottier
 
 **Project Summary in max 10 words:** E
 
-**Project Title:** F
+**Project Title:** Smart Plastic Bottles Waste Management System
 
 # Tips for Feedback Conversations
 
