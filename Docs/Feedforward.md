@@ -32,17 +32,22 @@
 
 # Feedforward Conversations
 
-## Conversation 1 (Date: xx/xx/2024)
+## Conversation 1 (Date: 29/05/2024)
 
-Lecturer:
+Lecturer: Veraghtert Tijn
 
 Questions for this conversation:
 
-- Question 1: V
+- Question 1: Which material to use? cardboard/plywood?
+- Question 2: will servo motor be enough to move platform or should i use some other technique?
+
 
 This is the feedback on my questions.
 
-- Feedback 1: G
+- Feedback 1: Plywood would be a better choice.
+- Feedback 2: i could try using servo motor if it would be able to hold the load/weight.
+- Feedback 3: try making a model that fits on daily-use bin (eg howest dustbins) so
+  I won't have to make the bottom part and can it could be used more widely and portable. 
 
 ## Conversation 2 (Date: xx/xx/2024)
 
