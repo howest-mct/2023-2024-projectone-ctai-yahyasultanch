@@ -126,31 +126,56 @@ print("start")
 # Load the YOLO model
 model = YOLO("C:\\Users\\yahya\\Documents\\project_one\\2023-2024-projectone-ctai-yahyasultanch\\runs\\detect\\yolov8_new_bottle\\weights\\best.pt")
 
-# Create queues for communication between threads
+# # Create queues for communication between threads
+# tx_q = Queue()
+# rx_q = Queue()
+
+# targetDeviceName = None
+# targetDeviceMac = "D8:3A:DD:DE:0B:D9"  # Update this with your Raspberry Pi's MAC address
+
+# def init_ble_thread():
+#     ble_client_thread = threading.Thread(target=run, args=(rx_q, tx_q, targetDeviceName, targetDeviceMac), daemon=True)
+#     ble_client_thread.start()
+
+# async def find_device(mac_address):
+#     device = None
+#     while device is None:
+#         print("Scanning for device...")
+#         devices = await BleakScanner.discover()
+#         for d in devices:
+#             if d.address == mac_address:
+#                 device = d
+#                 break
+#         if device is None:
+#             print("Device not found, retrying...")
+#             time.sleep(2)
+#     print(f"Found device: {device.address}")
+#     return device
+
 tx_q = Queue()
 rx_q = Queue()
-
-targetDeviceName = None
-targetDeviceMac = "D8:3A:DD:DE:0B:D9"  # Update this with your Raspberry Pi's MAC address
+BLE_DEVICE_MAC = "D8:3A:DD:DE:0B:D9"
+connection_event = threading.Event()
 
 def init_ble_thread():
-    ble_client_thread = threading.Thread(target=run, args=(rx_q, tx_q, targetDeviceName, targetDeviceMac), daemon=True)
-    ble_client_thread.start()
+    global ble_client_thread
+    try:
+        # Creating a new thread for running a function 'run' with specified arguments.
+        ble_client_thread = threading.Thread(target=run, args=(
+            rx_q, tx_q, None, BLE_DEVICE_MAC, connection_event), daemon=True)
+        # Starting the thread execution.
+        ble_client_thread.start()
+    except Exception as e:
+        print(f"Error starting BLE client thread: {e}")
 
-async def find_device(mac_address):
-    device = None
-    while device is None:
-        print("Scanning for device...")
-        devices = await BleakScanner.discover()
-        for d in devices:
-            if d.address == mac_address:
-                device = d
-                break
-        if device is None:
-            print("Device not found, retrying...")
-            time.sleep(2)
-    print(f"Found device: {device.address}")
-    return device
+# Initialize the thread variable
+ble_client_thread = None
+
+# Repeat the thread initialization until the connection_event is set
+while not connection_event.is_set():
+    if ble_client_thread is None or not ble_client_thread.is_alive():
+        init_ble_thread()
+    connection_event.wait(timeout=5)  # Optional timeout to avoid tight looping
 
 def process_frame(frame):
     results = model(frame)
@@ -199,7 +224,7 @@ def main():
     # Check for the BLE device before starting camera processing
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    device = loop.run_until_complete(find_device(targetDeviceMac))
+    # device = loop.run_until_complete(find_device(targetDeviceMac))
 
     # Initialize the BLE thread once the device is found
     print("Launching BLE thread")
