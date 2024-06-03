@@ -25,6 +25,9 @@ labelled_dataset(2)/
 # ignore predicted test results
 predict/
 
+# 
+/webapp/
+
 # Python project
 config.py
 *.css

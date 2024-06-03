@@ -87,3 +87,7 @@ ultralytics==8.1.34
 urllib3==2.2.1
 uvicorn==0.29.0
 websockets==11.0.3
+flask==3.0.3 
+Flask-MySQL==1.5.2
+Flask-Mail==0.10.0
+mysql-connector-python==8.4.0

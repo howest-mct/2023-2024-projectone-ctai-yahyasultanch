@@ -32,6 +32,19 @@
 
 # Feedforward Conversations
 
+## MVP 1 (Date: 28/05/2024)
+
+Lecturer: Veraghtert Tijn, Marie Dewitte, Christophe
+
+Questions for this conversation:
+
+- Question 1: Should i add more data/images of other things? 
+
+This is the general feedback and the feedback on my questions:
+
+- Feedback 1: The model works nice enough and is very robust.
+- Feedback 2: more data of other trash stuff like cans etc could be added to make it better. 
+
 ## Conversation 1 (Date: 29/05/2024)
 
 Lecturer: Veraghtert Tijn
@@ -40,7 +53,6 @@ Questions for this conversation:
 
 - Question 1: Which material to use? cardboard/plywood?
 - Question 2: will servo motor be enough to move platform or should i use some other technique?
-
 
 This is the feedback on my questions.
 
