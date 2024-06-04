@@ -63,15 +63,17 @@ This is the feedback on my questions.
 
 ## Conversation 2 (Date: xx/xx/2024)
 
-Lecturer:
+Lecturer: Claudia , Cristophe, Veraghtert Tijn 
 
 Questions for this conversation:
 
-- Question 1: V
+- Question 1:
 
 This is the feedback on my questions.
 
-- Feedback 1: G
+- Feedback 1: On schedule and works well. 
+
+- Feedback 2: why the accuracy for caps is less than bottles; consult Marie about it.
 
 ## Conversation 3 (Date: xx/xx/2024)
 
