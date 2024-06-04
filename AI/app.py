@@ -124,7 +124,7 @@ from bleak import BleakScanner
 print("start")
 
 # Load the YOLO model
-model = YOLO("C:\\Users\\yahya\\Documents\\project_one\\2023-2024-projectone-ctai-yahyasultanch\\runs\\detect\\yolov8_new_bottle\\weights\\best.pt")
+model = YOLO("C:\\Users\\yahya\\Documents\\project_one\\2023-2024-projectone-ctai-yahyasultanch\\runs\\detect\\yolov8_latest_model_bottlecap\\weights\\best.pt")
 
 # # Create queues for communication between threads
 # tx_q = Queue()
@@ -191,20 +191,20 @@ def process_frame(frame):
                 xyxy = box.xyxy if isinstance(box.xyxy, torch.Tensor) else torch.tensor(box.xyxy)
                 xyxy = xyxy.view(-1).numpy().astype(int)
 
-                # Check if confidence is below 0.4, skip drawing the bounding box
-                if conf < 0.6:
+                # Check if confidence is below 0.5, skip drawing the bounding box
+                if conf < 0.5:
                     continue
 
                 # Determine color based on detection confidence
-                if conf >= 0.6:
+                if conf >= 0.5:
                     color = (0, 255, 0)  # Green for accepted
                 else:
                     color = (0, 0, 255)  # Red for rejected
 
                 # Check if bottle and cap are detected with sufficient confidence
-                if result.names[cls] == 'bottle' and conf >= 0.6:
+                if result.names[cls] == 'bottle' and conf >= 0.5:
                     bottle_detected = True
-                if result.names[cls] == 'cap' and conf >= 0.6:
+                if result.names[cls] == 'cap' and conf >= 0.5:
                     cap_detected = True
 
                 # Draw the bounding box and label
