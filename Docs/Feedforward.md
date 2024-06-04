@@ -43,7 +43,7 @@ Questions for this conversation:
 This is the general feedback and the feedback on my questions:
 
 - Feedback 1: The model works nice enough and is very robust.
-- Feedback 2: more data of other trash stuff like cans etc could be added to make it better. 
+- Feedback 2: more data could be added to make it better. 
 
 ## Conversation 1 (Date: 29/05/2024)
 
