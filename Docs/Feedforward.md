@@ -61,26 +61,24 @@ This is the feedback on my questions.
 - Feedback 3: try making a model that fits on daily-use bin (eg howest dustbins) so
   I won't have to make the bottom part and can it could be used more widely and portable. 
 
-## Conversation 2 (Date: xx/xx/2024)
+## MVP 2 (Date: 04/06/2024)
 
-Lecturer:
+Lecturer: Claudia , Cristophe, Veraghtert Tijn 
 
-Questions for this conversation:
+This is the feedback.
 
-- Question 1: V
+- Feedback 1: On schedule and works well. 
 
-This is the feedback on my questions.
+- Feedback 2: why the accuracy for caps is less than bottles; consult Marie about it.
 
-- Feedback 1: G
+## Conversation 2 (Date: 05/06/2024)
 
-## Conversation 3 (Date: xx/xx/2024)
-
-Lecturer:
+Lecturer: Veraghtert Tijn
 
 Questions for this conversation:
 
-- [x] Question 1: V
+- Question 1: questions about recent maker part and using servo motor
 
 This is the feedback on my questions.
 
-- Feedback 1: G
+- Feedback 1: gave new suggestions for how to move servo motor and make flap-like system
