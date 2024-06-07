@@ -77,7 +77,7 @@ Lecturer: Veraghtert Tijn
 
 Questions for this conversation:
 
-- [x] Question 1: questions about recent maker part and using servo motor
+- Question 1: questions about recent maker part and using servo motor
 
 This is the feedback on my questions.
 
