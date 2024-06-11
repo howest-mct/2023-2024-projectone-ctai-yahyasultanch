@@ -69,7 +69,7 @@ This is the feedback.
 
 - Feedback 1: On schedule and works well. 
 
-- Feedback 2: why the accuracy for caps is less than bottles; consult Marie about it.
+- Feedback 2: the accuracy for caps is less than bottles.
 
 ## Conversation 2 (Date: 05/06/2024)
 
@@ -81,4 +81,4 @@ Questions for this conversation:
 
 This is the feedback on my questions.
 
-- Feedback 1: gave new suggestions for how to move servo motor and make flap-like system
+- Feedback 1: gave new suggestions for how to move servo motor and make flap-like system for platform
