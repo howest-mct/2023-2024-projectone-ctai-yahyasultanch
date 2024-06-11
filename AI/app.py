@@ -124,7 +124,7 @@ from bleak import BleakScanner
 print("start")
 
 # Load the YOLO model
-model = YOLO("C:\\Users\\yahya\\Documents\\project_one\\2023-2024-projectone-ctai-yahyasultanch\\runs\\detect\\yolov8_latest_model_bottlecap\\weights\\best.pt")
+model = YOLO("C:\\Users\\yahya\\Documents\\project_one\\2023-2024-projectone-ctai-yahyasultanch\\runs\\detect\\yolov8_latest_bottle_and_cap\\weights\\best.pt")
 
 # # Create queues for communication between threads
 # tx_q = Queue()
@@ -191,26 +191,26 @@ def process_frame(frame):
                 xyxy = box.xyxy if isinstance(box.xyxy, torch.Tensor) else torch.tensor(box.xyxy)
                 xyxy = xyxy.view(-1).numpy().astype(int)
 
-                # Check if confidence is below 0.5, skip drawing the bounding box
-                if conf < 0.5:
+                # Check if confidence is below 0.4, skip drawing the bounding box
+                if conf < 0.4:
                     continue
 
                 # Determine color based on detection confidence
-                if conf >= 0.5:
+                if conf >= 0.4:
                     color = (0, 255, 0)  # Green for accepted
                 else:
                     color = (0, 0, 255)  # Red for rejected
 
                 # Check if bottle and cap are detected with sufficient confidence
-                if result.names[cls] == 'bottle' and conf >= 0.5:
+                if result.names[cls] == 'bottle' and conf >= 0.4:
                     bottle_detected = True
-                if result.names[cls] == 'cap' and conf >= 0.5:
+                if result.names[cls] == 'cap' and conf >= 0.4:
                     cap_detected = True
 
                 # Draw the bounding box and label
                 cv2.rectangle(frame, (xyxy[0], xyxy[1]), (xyxy[2], xyxy[3]), color, 2)
                 label = f"{result.names[cls]}: {conf:.2f}"
-                cv2.putText(frame, label, (xyxy[0], xyxy[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                cv2.putText(frame, label, (xyxy[0], xyxy[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, color, 2)
 
     # Send the result via BLE
     if bottle_detected and cap_detected:
@@ -319,9 +319,9 @@ if __name__ == '__main__':
 
 #                 # Draw the bounding box
 #                 color = (0, 255, 0)  # Green for accepted
-#                 if result.names[cls] == 'bottle' and conf > 0.5:
+#                 if result.names[cls] == 'bottle' and conf > 0.4:
 #                     bottle_detected = True
-#                 if result.names[cls] == 'cap' and conf > 0.5:
+#                 if result.names[cls] == 'cap' and conf > 0.4:
 #                     cap_detected = True
 
 #                 if not (bottle_detected and cap_detected):
@@ -329,7 +329,7 @@ if __name__ == '__main__':
 
 #                 cv2.rectangle(frame, (xyxy[0], xyxy[1]), (xyxy[2], xyxy[3]), color, 2)
 #                 label = f"{result.names[cls]}: {conf:.2f}"
-#                 cv2.putText(frame, label, (xyxy[0], xyxy[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+#                 cv2.putText(frame, label, (xyxy[0], xyxy[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, color, 2)
 
 #     if bottle_detected and cap_detected:
 #         tx_q.put("accepted")
