@@ -82,3 +82,14 @@ Questions for this conversation:
 This is the feedback on my questions.
 
 - Feedback 1: gave new suggestions for how to move servo motor and make flap-like system for platform
+
+  ## MVP 3 (Date: 11/06/2024)
+
+Lecturer: Frederick WAEYAERT, Geert
+
+This is the feedback.
+
+- Feedback 1: toggle is ok instructables in progress housing in progress feedforward is in progress 
+
+- Feedback 2: reflection is ok
+
