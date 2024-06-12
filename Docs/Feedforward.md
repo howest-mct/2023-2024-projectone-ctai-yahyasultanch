@@ -32,6 +32,19 @@
 
 # Feedforward Conversations
 
+## MVP 1 (Date: 28/05/2024)
+
+Lecturer: Veraghtert Tijn, Marie Dewitte, Christophe
+
+Questions for this conversation:
+
+- Question 1: Should i add more data/images of other things? 
+
+This is the general feedback and the feedback on my questions:
+
+- Feedback 1: The model works nice enough and is very robust.
+- Feedback 2: more data could be added to make it better. 
+
 ## Conversation 1 (Date: 29/05/2024)
 
 Lecturer: Veraghtert Tijn
@@ -41,7 +54,6 @@ Questions for this conversation:
 - Question 1: Which material to use? cardboard/plywood?
 - Question 2: will servo motor be enough to move platform or should i use some other technique?
 
-
 This is the feedback on my questions.
 
 - Feedback 1: Plywood would be a better choice.
@@ -49,26 +61,35 @@ This is the feedback on my questions.
 - Feedback 3: try making a model that fits on daily-use bin (eg howest dustbins) so
   I won't have to make the bottom part and can it could be used more widely and portable. 
 
-## Conversation 2 (Date: xx/xx/2024)
+## MVP 2 (Date: 04/06/2024)
 
-Lecturer:
+Lecturer: Claudia , Cristophe, Veraghtert Tijn 
 
-Questions for this conversation:
+This is the feedback.
 
-- Question 1: V
+- Feedback 1: On schedule and works well. 
 
-This is the feedback on my questions.
+- Feedback 2: the accuracy for caps is less than bottles.
 
-- Feedback 1: G
+## Conversation 2 (Date: 05/06/2024)
 
-## Conversation 3 (Date: xx/xx/2024)
-
-Lecturer:
+Lecturer: Veraghtert Tijn
 
 Questions for this conversation:
 
-- [x] Question 1: V
+- Question 1: questions about recent maker part and using servo motor
 
 This is the feedback on my questions.
 
-- Feedback 1: G
+- Feedback 1: gave new suggestions for how to move servo motor and make flap-like system for platform
+
+  ## MVP 3 (Date: 11/06/2024)
+
+Lecturer: Frederick WAEYAERT, Geert
+
+This is the feedback.
+
+- Feedback 1: toggle is ok instructables in progress housing in progress feedforward is in progress 
+
+- Feedback 2: reflection is ok
+
