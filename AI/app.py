@@ -17,7 +17,7 @@ import gradio as gr  # Importing Gradio library for creating web interfaces.
 print("start")
 
 # Load the YOLO model
-model = YOLO("C:\\Users\\yahya\\Documents\\project_one\\2023-2024-projectone-ctai-yahyasultanch\\runs\\detect\\yolov8_latest_bottle_and_cap\\weights\\best.pt")
+model = YOLO("C:\\Users\\yahya\\Documents\\project_one\\2023-2024-projectone-ctai-yahyasultanch\\runs\\detect\\yolov8_last-bot-cap-model\\weights\\best.pt")
 tx_q = Queue()
 rx_q = Queue()
 BLE_DEVICE_MAC = "D8:3A:DD:DE:0B:D9"
@@ -123,6 +123,8 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
 
 # --------------- 1fps picture capture ------------
 

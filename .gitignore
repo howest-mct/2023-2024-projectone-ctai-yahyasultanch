@@ -24,10 +24,6 @@ labelled_dataset(2)/
 labelled_dataset(3)/
 lat-lab-dataset/
 
-# ignore predicted test results
-predict/
-predict2/
-
 # 
 /webapp/
 
